@@ -3,6 +3,7 @@ package services
 import (
 	"context"
 	"errors"
+	"fmt"
 	"os"
 	"strconv"
 	"time"
@@ -18,31 +19,15 @@ type AuthService struct {
 	jwtSecret []byte
 }
 
+const EnvJWTSecret = "JWT_SECRET"
+
 var ErrAuthenticationFail = errors.New("authentication fail")
-
-const letterBytes = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
-
-func RandByteStr(n int) []byte {
-	b := make([]byte, n)
-	src := rand.NewSource(uint64(time.Now().UnixNano()))
-	for i := 0; i < n; i++ {
-		b[i] = byte(letterBytes[src.Uint64()%uint64(len(letterBytes))])
-	}
-
-	return b
-}
+var jwtSecret []byte
 
 func NewAuthService(db container.DB) *AuthService {
-	jwtSecret := os.Getenv("SECRET")
-	var jwt []byte
-	if len(jwtSecret) > 0 {
-		jwt = []byte(jwtSecret)
-	} else {
-		jwt = RandByteStr(48)
-	}
 	return &AuthService{
 		db:        db,
-		jwtSecret: jwt,
+		jwtSecret: jwtSecret,
 	}
 }
 
@@ -69,4 +54,20 @@ func (s *AuthService) GetJWT(user entities.UserEntity) (token string, err error)
 	})
 	token, err = claims.SignedString(s.jwtSecret)
 	return
+}
+
+func init() {
+	secret := os.Getenv(EnvJWTSecret)
+	if len(secret) > 0 {
+		jwtSecret = []byte(secret)
+		return
+	}
+	const letterBytes = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+	const n = 48
+	jwtSecret = make([]byte, n)
+	src := rand.NewSource(uint64(time.Now().UnixNano()))
+	for i := 0; i < n; i++ {
+		jwtSecret[i] = byte(letterBytes[src.Uint64()%uint64(len(letterBytes))])
+	}
+	fmt.Printf("MISSING ENV %s - JWT SECRET RANDOMICALLY GENERATED: %s", EnvJWTSecret, jwtSecret)
 }
