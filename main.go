@@ -14,7 +14,6 @@ func main() {
 
 	// register route greet
 	app.GET("/greet", func(ctx *gofr.Context) (interface{}, error) {
-
 		return "Hello World!", nil
 	})
 	app.POST("/login", controllers.LoginHandler)

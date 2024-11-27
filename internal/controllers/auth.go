@@ -14,7 +14,6 @@ type LoginRequest struct {
 }
 
 func LoginHandler(c *gofr.Context) (interface{}, error) {
-
 	var loginRequest LoginRequest
 	if err := c.Bind(&loginRequest); err != nil {
 		return nil, NewHTTPError(fmt.Sprintf("Invalid payload: %v", err), 400)

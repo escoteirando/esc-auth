@@ -4,6 +4,7 @@ go 1.23.3
 
 require (
 	github.com/golang-jwt/jwt/v5 v5.2.1
+	github.com/stretchr/testify v1.9.0
 	gofr.dev v1.27.1
 	golang.org/x/crypto v0.28.0
 	golang.org/x/exp v0.0.0-20231108232855-2478ac86f678
@@ -60,7 +61,6 @@ require (
 	github.com/redis/go-redis/v9 v9.7.0 // indirect
 	github.com/remyoudompheng/bigfft v0.0.0-20230129092748-24d4a6f8daec // indirect
 	github.com/segmentio/kafka-go v0.4.47 // indirect
-	github.com/stretchr/testify v1.9.0 // indirect
 	go.opencensus.io v0.24.0 // indirect
 	go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc v0.54.0 // indirect
 	go.opentelemetry.io/contrib/instrumentation/net/http/httptrace/otelhttptrace v0.56.0 // indirect
