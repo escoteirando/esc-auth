@@ -1,0 +1,33 @@
+run:
+  tests: true
+  timeout: 5m
+  modules-download-mode: readonly
+
+linters:
+  disable-all: true
+  enable:
+    - goconst
+    - gocyclo
+    - gosec
+    - gosimple
+    - govet
+    - ineffassign
+    - typecheck
+    - unconvert
+    - whitespace
+    - gofmt
+
+linters-settings:
+  gocyclo:
+    min-complexity: 70
+issues:
+  fix: true
+  exclude-rules:
+    - linters:
+        - revive
+      text: "don't use an underscore in package name"
+    # Exclude some linters from running on tests files.
+    - path: _test\.go
+      linters:
+        - dupl
+        - gosec

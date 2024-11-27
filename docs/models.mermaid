@@ -1,0 +1,75 @@
+---
+title: Models
+---
+erDiagram
+    ASSOCIATION {
+        int ID PK
+        string Name "Nome da associação"
+        string Abbreviation UK "Sigla/abreviação"
+        bool Enabled "Habilitada"
+    }
+
+    REGION {
+        int ID PK
+        int ASSOC_ID FK
+        string Name "Nome da região"
+        string Abbreviation "Sigla/abreviação"
+        bool Enabled "Habilitada"
+    }
+
+
+    GROUP {
+        int ID PK
+        int ASSOC_ID FK
+        int REGION_ID FK
+        int MODALITY_ID FK
+        string Code "Código do grupo"
+        string Name "Nome do grupo"
+    }
+
+    MODALITY {
+        int ID PK
+        int ASSOC_ID FK
+        string Name "Nome da modalidade"
+        string Code "Código"        
+    }
+
+    SESSION {
+        int ID PK
+        int ASSOC_ID FK
+        int REGION_ID FK
+        int GROUP_ID FK
+        int MODALITY_ID FK
+        string Name "Nome da seção"
+        bool Enabled "Habilitada"
+    }
+
+    PERSON {
+        int ID PK
+        string USERNAME UK 
+        string Name "Nome"
+        date BirthDate "Nascimento"
+        int ASSOC_ID FK
+    }
+
+    USER {
+        int ID PK
+        string USERNAME UK
+        string PASSWORD
+        int PERSON_ID FK
+    }
+ 
+
+
+    ASSOCIATION ||--o{ REGION : contains 
+
+    REGION ||--o{ GROUP : contains
+
+    ASSOCIATION ||--o{ MODALITY : "Has many"
+
+    GROUP ||--|| MODALITY : Is
+
+    GROUP ||--o{ SESSION : "Has many"
+
+
+    PERSON ||--|| USER : Is
